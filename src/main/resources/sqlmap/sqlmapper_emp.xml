@@ -1,6 +1,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- Mybatis에게 Mapper 경로를 적어야 한다 -->
-<mapper namespace="com.example.first_spring.mapper.MainMapper">
+<mapper namespace="com.example.first_spring.mapper.EmpMapper">
 	<!-- id = mapper 메소드 이름 -->
 	<select id="getEmpList" resultType="EmpVO">
 		SELECT
@@ -13,6 +13,81 @@
 		SELECT
 			ename
 		FROM emp
-		WHERE empno = 7499
+		WHERE empno = #{empNo}
+		<!-- MyBatis 문법. 중괄호 안에 mapper의 파라미터와 같은 이름을 적어준다. -->
 	</select>
+	
+	<select id="selectEmpNameAndJob" resultType="EmpVO">
+		SELECT
+			ename,
+			job
+		FROM emp
+		WHERE ename like '%L%L%'
+	</select>
+	<select id="selectEnameAndComm" resultType="EmpVO">
+		SELECT
+			ename,
+			comm
+		FROM emp
+		WHERE comm is null
+	</select>
+	<select id="selectEnameAndHiredate" resultType="EmpVO">
+		SELECT
+			ename,
+			hiredate 
+		FROM emp 
+	    WHERE
+	        <![CDATA[
+			hiredate >= '1980-12-17' 
+			and hiredate <= '1982-01-23'
+			]]>
+	</select>
+	
+	<select id="selectEmpName" resultType="EmpVO">
+		SELECT
+			ename
+		FROM emp
+		<![CDATA[
+		WHERE 
+			job = #{job}
+		and 
+			sal >= #{sal}
+		]]>
+	</select>
+	
+	<!-- 숙제 0번 -->
+	<select id="selectNameAndComm" resultType="EmpVO">
+		select 
+			ename,
+			SAL 
+		from emp
+		where 
+			(DEPTNO = 10 
+		or
+			DEPTNO = 30)
+		and 
+			SAL > #{sal}
+	</select>
+	<!-- 숙제 1번 -->
+	<select id="selectIfAll" resultType="EmpVO">
+		select 
+			*
+		from emp
+		where MGR is null
+	</select>
+	<!-- 숙제 2번 -->
+	<select id="selectYearEmp" resultType="EmpVO">
+		select 
+			*
+		from emp
+		where date_format(HIREDATE, '%Y') = #{year}
+	</select>
+	<!-- 숙제 3번 -->
+	<select id="selectMonthEmp" resultType="EmpVO">
+		select 
+			*
+		from emp
+		where date_format(HIREDATE, '%m') = #{month}
+	</select>
+	
 </mapper>
