@@ -12,4 +12,7 @@ public class EmpVO {
 	private int sal;
 	private int comm;
 	private int deptno;
+	
+	private DeptVO deptVO;
+//	slqmapper_emp.xml의 <collection property="deptVO" resultMap="DeptVO"/> 에서 property 이름과 변수를 같게 해줘야 함.
 }

@@ -105,12 +105,38 @@
 		where JOB = #{job} 
 	</select>
 	<!-- 숙제 5번. 특정 사원의 모든 정보 조회(emp, dept 테이블 조인) -->
-	<select id="selectAllEmpInfo" resultType="EmpVO">
+	<resultMap type="DeptVO" id="DeptVO">
+		<result column="deptno" property="deptno"/>
+		<result column="dname" property="dname"/>
+		<result column="loc" property="loc"/>
+	</resultMap>
+	<resultMap type="EmpVO" id="EmpVO">
+		<result column="empno" property="empno"/>
+		<result column="ename" property="ename"/>
+		<result column="job" property="job"/>
+		<result column="mgr" property="mgr"/>
+		<result column="hiredate" property="hiredate"/>
+		<result column="sal" property="sal"/>
+		<result column="comm" property="comm"/>
+		<result column="deptno" property="deptno"/>
+		<collection property="deptVO" resultMap="DeptVO"/>
+	</resultMap>
+	<select id="selectAllEmpInfo" parameterType="EmpVO" resultMap="EmpVO">
 		select 
-			*
+			e.empno,
+			e.ename,
+			e.job,
+			e.mgr,
+			e.hiredate,
+			e.sal,
+			e.comm,
+			e.deptno,
+			d.deptno,
+			d.dname,
+			d.loc
 		from emp e
 		inner join dept d
-		on e.DEPTNO = d.DEPTNO 
-		where empno = #{empno}
+		on e.deptno = d.deptno
+		where e.empno = #{empno}
 	</select>
 </mapper>
