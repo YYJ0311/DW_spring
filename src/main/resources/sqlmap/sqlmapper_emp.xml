@@ -134,6 +134,7 @@
 			d.deptno,
 			d.dname,
 			d.loc
+			<!-- *로 표시해도 됨 -->
 		from emp e
 		inner join dept d
 		on e.deptno = d.deptno
