@@ -27,12 +27,16 @@ public interface EmpMapper {
 			@Param("job") String job,
 			@Param("sal") int sal);
 	
-	// 숙제 0. 급여 1500을 파라미터로 받고 부서가 10, 30에 속하는 사원 중 급여가 1500을 넘는 사원의 이름 및 급여 조회.
+	// 숙제 0
 	public List<EmpVO> selectNameAndComm(int sal);
-	// 숙제 1. emp에서 사수가 없는 사원 조회
+	// 숙제 1
 	public List<EmpVO> selectIfAll();
-	// 숙제 2. 1987년도를 파리미터로 받고 해당 년도에 입사한 사원 조회 
+	// 숙제 2
 	public List<EmpVO> selectYearEmp(String year);
-	// 숙제 3. 12월을 파라미터로 받고 해당 월에 입사한 사원 중 급여가 가장 많은 사원 조회
-	public EmpVO selectMonthEmp(String month);
+	// 숙제 3
+	public List<EmpVO> selectMonthEmp(String month);
+	// 숙제 4
+	public List<EmpVO> selectHiredateEmp(String job);
+	// 숙제 5
+	public List<EmpVO> selectAllEmpInfo(int empno);
 }

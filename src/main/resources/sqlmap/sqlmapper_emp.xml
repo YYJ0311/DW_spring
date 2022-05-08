@@ -68,26 +68,49 @@
 		and 
 			SAL > #{sal}
 	</select>
-	<!-- 숙제 1번 -->
+	
+	<!-- 숙제 퍼시스턴스 로직 구현 -->
+	<!-- 숙제 1번. MGR이 NULL인 사원 이름, 직업, 급여 조회 -->
 	<select id="selectIfAll" resultType="EmpVO">
 		select 
 			*
 		from emp
 		where MGR is null
 	</select>
-	<!-- 숙제 2번 -->
+	<!-- 숙제 2번. 특정 년도에 입사한 사원 이름, 직업, 입사날짜, 급여 조회-->
 	<select id="selectYearEmp" resultType="EmpVO">
 		select 
-			*
+			ename,
+			job,
+			hiredate,
+			sal
 		from emp
 		where date_format(HIREDATE, '%Y') = #{year}
 	</select>
-	<!-- 숙제 3번 -->
+	<!-- 숙제 3번. 입사 날짜가12월에 입사한 사원 이름, 급여 조회-->
 	<select id="selectMonthEmp" resultType="EmpVO">
 		select 
-			*
+			ename,
+			sal
 		from emp
 		where date_format(HIREDATE, '%m') = #{month}
 	</select>
-	
+	<!-- 숙제 4번. 특정 job에 속한 사원번호, 사원 이름, 입사날짜 조회 -->
+	<select id="selectHiredateEmp" resultType="EmpVO">
+		select 
+			EMPNO,
+			ENAME,
+			HIREDATE 
+		from emp
+		where JOB = #{job} 
+	</select>
+	<!-- 숙제 5번. 특정 사원의 모든 정보 조회(emp, dept 테이블 조인) -->
+	<select id="selectAllEmpInfo" resultType="EmpVO">
+		select 
+			*
+		from emp e
+		inner join dept d
+		on e.DEPTNO = d.DEPTNO 
+		where empno = #{empno}
+	</select>
 </mapper>
