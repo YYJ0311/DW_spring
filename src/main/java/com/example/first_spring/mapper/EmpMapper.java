@@ -25,7 +25,7 @@ public interface EmpMapper {
 	
 	public List<EmpVO> selectEmpName(
 			@Param("job") String job,
-			@Param("sal") int sal);
+			@Param("sal") int sal);	
 	
 	// 숙제 0
 	public List<EmpVO> selectNameAndComm(int sal);
@@ -39,4 +39,9 @@ public interface EmpMapper {
 	public List<EmpVO> selectHiredateEmp(String job);
 	// 숙제 5
 	public List<EmpVO> selectAllEmpInfo(int empno);
+	
+	
+	public int insertEmp(EmpVO empVO); // 데이터 삽입
+	public int deleteEmp(int empno); // 데이터 삭제
+	public int updateEmp(EmpVO empVO); // 데이터 수정
 }

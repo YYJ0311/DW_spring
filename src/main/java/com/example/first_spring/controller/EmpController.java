@@ -1,10 +1,15 @@
 package com.example.first_spring.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.first_spring.service.EmpService;
@@ -44,6 +49,9 @@ public class EmpController {
 	public List<EmpVO> callEmpName(@PathVariable("job") String job, @PathVariable("sal") int sal) {
 		return empService.getEmpName(job, sal);
 	}
+//	위 문제에 아래 로직을 service에 추가
+//	job이 manager이고 sal이 2500이상 받는 사원 comm 500으로 업데이트하고 해당 사원 이름, 직업, 커미션 조회
+	
 	
 	// 숙제 0번. 급여 1500을 파라미터로 받고 부서가 10, 30에 속하는 사원 중 급여가 1500을 넘는 사원의 이름 및 급여 조회.
 	@GetMapping("/emp/sal/{sal}")
@@ -74,5 +82,26 @@ public class EmpController {
 	@GetMapping("/emp/empno/{empno}")
 	public List<EmpVO> callAllEmpInfo(@PathVariable("empno") int empno){
 		return empService.getAllEmpInfo(empno);
+	}
+	
+	
+	// emp테이블에 insert해보기
+	// PostMapping : 중요한 정보를 보내거나, 데이터를 보낼 때 post 사용
+	// 대표적인 예 : 회원가입
+	// @RequestBody가 파라미터로 넘어오는 VO클래스를 대신 new 해줌
+	@PostMapping("/emp")
+	public int callEmpSet(@RequestBody EmpVO empVO) {
+//		System.out.println("사원 이름은 : "+empVO.getEname());
+//		System.out.println("사원 번호는 : "+empVO.getEmpno());
+//		System.out.println("상사 번호는 : "+empVO.getMgr());
+		return empService.setEmp(empVO);
+	}
+	@DeleteMapping("/emp/empno/{empno}")
+	public int callEmpRemove(@PathVariable("empno") int empno) {
+		return empService.getEmpRemoveCount(empno);
+	}
+	@PatchMapping("/emp")
+	public int callEmpUpdate(@RequestBody EmpVO empVO) {
+		return empService.getEmpUpdateCount(empVO);
 	}
 }
