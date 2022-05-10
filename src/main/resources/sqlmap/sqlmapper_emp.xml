@@ -146,6 +146,21 @@
 	
 	
 	<!-- 지금 우리가 쓰는건 MySql, 만약 DB가 Oracle이면 Insert할 때 PK문법이 다르다(값 대신 시퀀스를 추가해야 함) -->
+	
+	<delete id="deleteEmp">
+		DELETE FROM emp
+		WHERE empno = #{empno}
+	</delete>
+	
+	<update id="updateEmp">
+		UPDATE emp
+		SET 
+			sal = #{sal}
+		WHERE empno = #{empno}
+		<!-- 여기서 받는 #{}들은 postman에서 json으로 입력한 값들임 -->
+	</update>
+	
+	<!-- 05.10 수업내용 -->
 	<insert id="insertEmp">
 		INSERT INTO emp
 		(
@@ -158,20 +173,43 @@
 		(
 			#{empno},
 			#{ename},
+			(select 
+				d.DEPTNO 
+			from emp e 
+			right join dept d 
+			on e.DEPTNO = d.DEPTNO 
+			where e.DEPTNO is null ),
+			now()
+		)
+		<!--
+		VALUES
+		(
+			#{empno},
+			#{ename},
 			#{deptno},
 			now()
-			<!-- hiredate는 그냥 오늘날짜로 입력 -->
 		)
+		-->
 	</insert>
-	<delete id="deleteEmp">
-		DELETE FROM emp
-		WHERE empno = #{empno} 
-	</delete>
-	<update id="updateEmp">
-		UPDATE emp
-		SET 
-			comm = #{comm} 
-		WHERE empno = #{empno}
-		<!-- 여기서 받는 #{}들은 postman에서 json으로 입력한 값들임 -->
-	</update>
+	<select id="AllEmpList" resultType="EmpVO">
+		select 
+			*
+		from emp
+	</select>
+	
+	<select id="selectDeptNo" resultType="EmpVO">
+	<!-- 결과타입을 int로 해도 되지만 우선 크게 만듦 -->
+		SELECT 
+			d.DEPTNO 
+		FROM emp e 
+		right join dept d 
+		ON e.DEPTNO = d.DEPTNO 
+		WHERE e.DEPTNO is null 
+	</select>
+	<select id="selectEmpStartsName" resultType="int">
+		select 
+			count(ENAME)
+		from emp
+		where ENAME like CONCAT(#{first}, '%')
+	</select>
 </mapper>

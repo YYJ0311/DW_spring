@@ -44,4 +44,10 @@ public interface EmpMapper {
 	public int insertEmp(EmpVO empVO); // 데이터 삽입
 	public int deleteEmp(int empno); // 데이터 삭제
 	public int updateEmp(EmpVO empVO); // 데이터 수정
+	
+	public List<EmpVO> AllEmpList();
+	
+	public EmpVO selectDeptNo();
+//	쿼리의 결과가 단일행이기 때문에 리스트가 아닌 EmpVO가 리턴타입이다.
+	public int selectEmpStartsName(String first);
 }
