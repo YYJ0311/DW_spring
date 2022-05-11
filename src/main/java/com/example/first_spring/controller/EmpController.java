@@ -117,7 +117,7 @@ public class EmpController {
 //	board?page=1&pageSize=10&writer=유영준
 	@GetMapping("/board")
 	public int callBoard(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize, @RequestParam("writer") String writer) {
-		System.out.println("형재 페이지는 : "+page);
+		System.out.println("현재 페이지는 : "+page);
 		System.out.println("한 페이지에 보여주는 row 수는 : "+pageSize);
 		System.out.println("작성자는 : "+writer);
 		return 0;
@@ -134,9 +134,6 @@ public class EmpController {
 //	1. dept와 연결된 emp에서 없는 부서번호를 찾아서 사원이 새로 insert 될 때 그 부서번호로 insert되게 만들기
 	@PostMapping("/emp")
 	public int callEmpSet(@RequestBody EmpVO empVO) {
-//		System.out.println("사원 이름은 : "+empVO.getEname());
-//		System.out.println("사원 번호는 : "+empVO.getEmpno());
-//		System.out.println("상사 번호는 : "+empVO.getMgr());
 		return empService.setEmp(empVO);
 	}
 //	2. 급여가 3000 이상인 사원만 삭제(3000이 안 되는 사원은 return 0)
@@ -152,18 +149,28 @@ public class EmpController {
 	
 	
 	// 5.11 수업
-//	1. 사수가 있는 사원 조회
-//	2. 사수가 없는 사원 조회
+//	문제 0. 사수가 있는 사원과 없는 사원 조회
 	@GetMapping("/emp/mgr/{isMgr}")
 	public List<EmpVO> callEmpMgrList(@PathVariable("isMgr") String isMgr){
 		return empService.getEmpIsMgrList(isMgr);
 	}
-//	문제 1. 사원번호가 7902번인 사원 job을 SALESMAN, sal을 3500으로 수정하시오.
+//	isMgr 자리에 sql쿼리에서 사용한 if로 인해 true 나 false가 온다.
+	
+//	[문제 1. 사원번호가 7902번인 사원 job을 SALESMAN, sal을 3500으로 수정하시오.]
 //	@PatchMapping("/emp/no/{empno}/job/{job}/sal/{sal}")
+//	위처럼 풀면 주소가 너무 길어짐. 저렇게 풀면 안 됨.
 	@PatchMapping("/emp/no")
 	public int callEmpJobSalUpdate(@RequestBody EmpVO vo) {
 		return empService.getEmpJobSalUpdateCount(vo);
 	}
+//	위 방법은 empno와 job과 json 모두 json으로 담아서 수정하는 쿼리이다.
+//	위 방법보단 empno를 파라미터로 받고 나머지 job과 sal을 json으로 받아서 수정하는 쿼리를 작성해보자
+	@PatchMapping("/emp/no/{empno}")
+	public int callEmpUpdateTest(@RequestBody EmpVO vo, @PathVariable("empno") int empno) {
+		return empService.getEmpUpdateTest(vo, empno);
+	}
+//	body에 있는 vo를 json으로 받아서 수정하는 방법!!! 모르겠음..
+	
 //	문제2. 사원번호가 7844번인 사원의 COMM이 0이거나 null이면 기존 급여에서 500을 추가(수정)하시오.
 	@GetMapping("/emp/no/{empno}/comm/{isComm}/updatedSal")
 	public List<EmpVO> callEmpCommList(@PathVariable("empno") int empno, @PathVariable("isComm") String isComm){

@@ -55,8 +55,9 @@ public interface EmpMapper {
 	public List<EmpVO> selectEmpMgr(@Param("isMgr") String isMgr);
 //	파라미터가 1개지만 그냥 Param 붙여줌
 //	MyBatis에 boolean이 없어서 String으로 넣어줌
-	
 	public int updateEmpJobSal(EmpVO vo);
+	public int updateEmpJobSal(EmpVO vo, int empno);
+//	public int updateEmpTest(EmpVO vo, int empno);
 	public List<EmpVO> selectEmpComm(@Param("empno") int empno, @Param("isComm") String isComm);
 	
 //	선생님 풀이 1번

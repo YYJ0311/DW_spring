@@ -234,11 +234,13 @@
 	</select>
 	<!-- MyBatis에서 if 사용을 최소화 하는게 좋다. 오류 찾기 힘듦 -->
 	
+	<!-- 문제 1. 사원번호가 7902번인 사원 job을 SALESMAN, sal을 3500으로 수정하시오. -->
+	<!-- 방법1 -->
 	<update id="updateEmpJobSal">
 		UPDATE emp
 		SET
 			job = #{job},
-			sal = #{sal}	
+			sal = #{sal}
 		WHERE empno = #{empno}
 	</update>
 	

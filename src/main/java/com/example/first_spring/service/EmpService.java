@@ -183,10 +183,15 @@ public class EmpService {
 	public List<EmpVO> getEmpIsMgrList(String isMgr){
 		return empMapper.selectEmpMgr(isMgr);
 	}
-	
+//	1번 방법1
 	public int getEmpJobSalUpdateCount(EmpVO vo) {
 		return empMapper.updateEmpJobSal(vo);
 	}
+//	1번 방법2
+	public int getEmpUpdateTest(EmpVO vo, int empno) {
+		return empMapper.updateEmpJobSal(vo, empno);
+	}
+	
 	
 	@Transactional(rollbackFor = {Exception.class})
 	public List<EmpVO> getEmpIsCommList(int empno, String isComm){
