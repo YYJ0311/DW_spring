@@ -212,4 +212,70 @@
 		from emp
 		where ENAME like CONCAT(#{first}, '%')
 	</select>
+	
+	<!-- 5.11 수업 -->
+	<!-- true가 파라미터로 들어오면 사수 있는 사원 조회
+		false가 파라미터로 들어오면 사수 없는 사원 조회 -->
+	<select id="selectEmpMgr" resultType="EmpVO">
+	SELECT 
+		empno,
+		ename,
+		mgr
+	FROM emp 
+	WHERE 1=1
+	<!-- 1=1은 의미없음 -->
+	<if test='isMgr.equals("true")'>
+	<!-- test에는 #{}으로 표현하지 않는다 -->
+		AND mgr IS NOT NULL		
+	</if>
+	<if test='isMgr.equals("false")'>
+		AND mgr IS NULL	
+	</if>
+	</select>
+	<!-- MyBatis에서 if 사용을 최소화 하는게 좋다. 오류 찾기 힘듦 -->
+	
+	<update id="updateEmpJobSal">
+		UPDATE emp
+		SET
+			job = #{job},
+			sal = #{sal}	
+		WHERE empno = #{empno}
+	</update>
+	
+	<select id="selectEmpComm" resultType="EmpVO">
+		SELECT
+			comm,
+			sal
+		FROM emp
+		WHERE empno = #{empno}
+		<if test='isComm.equals("true")'>
+			AND comm IS NULL		
+		</if>
+		<if test='isComm.equals("0")'>
+			AND comm IS NULL	
+		</if>
+	</select>
+	
+	<!-- 선생님 풀이 1번 -->
+	<update id="updateEmpJobSalTeacher">
+		UPDATE emp
+		SET
+			job = #{job},
+			sal = #{sal}
+		WHERE empno = #{empno}
+	</update>
+	<!-- 선생님 풀이 2번 -->
+	<select id="selectEmpCommSal" resultType="EmpVO">
+		SELECT
+			empno,
+			comm,
+			sal
+		FROM emp
+		WHERE empno = #{empno}
+	</select>
+	<update id="updateEmpSal">
+		UPDATE emp
+		SET sal = #{sal}
+		WHERE empno = #{empno}
+	</update>
 </mapper>

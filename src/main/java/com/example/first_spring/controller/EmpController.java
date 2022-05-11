@@ -149,4 +149,40 @@ public class EmpController {
 	public int callEmpCount(@RequestParam("search") String first) {
 		return empService.getEmpCount(first);
 	}
+	
+	
+	// 5.11 수업
+//	1. 사수가 있는 사원 조회
+//	2. 사수가 없는 사원 조회
+	@GetMapping("/emp/mgr/{isMgr}")
+	public List<EmpVO> callEmpMgrList(@PathVariable("isMgr") String isMgr){
+		return empService.getEmpIsMgrList(isMgr);
+	}
+//	문제 1. 사원번호가 7902번인 사원 job을 SALESMAN, sal을 3500으로 수정하시오.
+//	@PatchMapping("/emp/no/{empno}/job/{job}/sal/{sal}")
+	@PatchMapping("/emp/no")
+	public int callEmpJobSalUpdate(@RequestBody EmpVO vo) {
+		return empService.getEmpJobSalUpdateCount(vo);
+	}
+//	문제2. 사원번호가 7844번인 사원의 COMM이 0이거나 null이면 기존 급여에서 500을 추가(수정)하시오.
+	@GetMapping("/emp/no/{empno}/comm/{isComm}/updatedSal")
+	public List<EmpVO> callEmpCommList(@PathVariable("empno") int empno, @PathVariable("isComm") String isComm){
+		return empService.getEmpIsCommList(empno, isComm);
+	}
+//	1. 선생님 풀이
+//	@PatchMapping("/emp/empno")
+//	public int callEmpSalJobUpdate(@RequestBody EmpVO vo) {
+//		return
+//	} 로 풀어도 됨
+	@PatchMapping("/emp/{empno}")
+	public int callEmpSalJobUpdate(@PathVariable("empno") int empno, @RequestBody EmpVO vo) {
+		return empService.updateEmpJobSal(vo, empno);
+	}
+//	=> 이렇게 풀면 empno를 파라미터로 받고 body에 json 입력해서 send하면 됨
+//	2. 선생님 풀이
+	@PatchMapping("/emp/empno/{empno}")
+//	@PatchMapping("/emp/empno/{empno}/{sal}")
+	public int callEmpSalUpdate(@PathVariable("empno") int empno) {
+		return empService.getEmpCommSal(empno);
+	}
 }

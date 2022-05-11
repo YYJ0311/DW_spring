@@ -50,4 +50,18 @@ public interface EmpMapper {
 	public EmpVO selectDeptNo();
 //	쿼리의 결과가 단일행이기 때문에 리스트가 아닌 EmpVO가 리턴타입이다.
 	public int selectEmpStartsName(String first);
+	
+	// 05.11 수업
+	public List<EmpVO> selectEmpMgr(@Param("isMgr") String isMgr);
+//	파라미터가 1개지만 그냥 Param 붙여줌
+//	MyBatis에 boolean이 없어서 String으로 넣어줌
+	
+	public int updateEmpJobSal(EmpVO vo);
+	public List<EmpVO> selectEmpComm(@Param("empno") int empno, @Param("isComm") String isComm);
+	
+//	선생님 풀이 1번
+	public int updateEmpJobSalTeacher(EmpVO vo);
+//	성생님 풀이 2번
+	public EmpVO selectEmpCommSal(@Param("empno") int empno);
+	public int updateEmpSal(EmpVO vo);
 }

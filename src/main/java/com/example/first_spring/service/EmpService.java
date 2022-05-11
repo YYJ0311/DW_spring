@@ -178,4 +178,45 @@ public class EmpService {
 	public int getEmpCount(String first) {
 		return empMapper.selectEmpStartsName(first);
 	}
+	
+//	05.11 수업
+	public List<EmpVO> getEmpIsMgrList(String isMgr){
+		return empMapper.selectEmpMgr(isMgr);
+	}
+	
+	public int getEmpJobSalUpdateCount(EmpVO vo) {
+		return empMapper.updateEmpJobSal(vo);
+	}
+	
+	@Transactional(rollbackFor = {Exception.class})
+	public List<EmpVO> getEmpIsCommList(int empno, String isComm){
+		List<EmpVO> list = empMapper.selectEmpComm(empno, isComm);
+		for(EmpVO vo : list) {
+			vo.setSal(vo.getSal()+500);
+		}
+		return empMapper.selectEmpComm(empno, isComm);
+	}
+	
+//	선생님 풀이 1번
+	@Transactional(rollbackFor = {Exception.class})
+	public int updateEmpJobSal(EmpVO vo, int empno) {
+		vo.setEmpno(empno);
+		return empMapper.updateEmpJobSalTeacher(vo);
+//		vo에 empno를 넣어줬기 때문에 vo만 리턴함
+	}
+//	선생님 풀이 2번
+	@Transactional(rollbackFor = {Exception.class})
+	public int getEmpCommSal(int empno) {
+		// COMM이 0이거나 NULL인지 확인
+		EmpVO vo = empMapper.selectEmpCommSal(empno);
+		int comm = vo.getComm();
+		if(comm == 0) {
+//			comm이 null인 사람도 0으로 나와서 0만 비교해주면 됨
+			int sal = vo.getSal();
+			int bonus = 500;
+			vo.setSal(sal+bonus);
+			return empMapper.updateEmpSal(vo); // 업데이트 로직
+		}
+		return 0;
+	}
 }
