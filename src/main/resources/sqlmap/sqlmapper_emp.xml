@@ -60,52 +60,52 @@
 	
 	<!-- 숙제 0번 -->
 	<select id="selectNameAndComm" resultType="EmpVO">
-		select 
+		SELECT 
 			ename,
-			SAL 
-		from emp
-		where 
-			(DEPTNO = 10 
-		or
-			DEPTNO = 30)
-		and 
-			SAL > #{sal}
+			sal 
+		FROM emp
+		WHERE 
+			(deptno = 10 
+		OR
+			deptno = 30)
+		AND 
+			sal > #{sal}
 	</select>
 	
 	<!-- 숙제 퍼시스턴스 로직 구현 -->
 	<!-- 숙제 1번. MGR이 NULL인 사원 이름, 직업, 급여 조회 -->
 	<select id="selectIfAll" resultType="EmpVO">
-		select 
+		SELECT 
 			*
-		from emp
-		where MGR is null
+		FROM emp
+		WHERE mgr is null
 	</select>
 	<!-- 숙제 2번. 특정 년도에 입사한 사원 이름, 직업, 입사날짜, 급여 조회-->
 	<select id="selectYearEmp" resultType="EmpVO">
-		select 
+		SELECT 
 			ename,
 			job,
 			hiredate,
 			sal
-		from emp
-		where date_format(HIREDATE, '%Y') = #{year}
+		FROM emp
+		WHERE date_format(HIREDATE, '%Y') = #{year}
 	</select>
 	<!-- 숙제 3번. 입사 날짜가12월에 입사한 사원 이름, 급여 조회-->
 	<select id="selectMonthEmp" resultType="EmpVO">
-		select 
+		SELECT 
 			ename,
 			sal
-		from emp
-		where date_format(HIREDATE, '%m') = #{month}
+		FROM emp
+		WHERE date_format(HIREDATE, '%m') = #{month}
 	</select>
 	<!-- 숙제 4번. 특정 job에 속한 사원번호, 사원 이름, 입사날짜 조회 -->
 	<select id="selectHiredateEmp" resultType="EmpVO">
-		select 
+		SELECT 
 			EMPNO,
 			ENAME,
 			HIREDATE 
-		from emp
-		where JOB = #{job} 
+		FROM emp
+		WHERE job = #{job} 
 	</select>
 	<!-- 숙제 5번. 특정 사원의 모든 정보 조회(emp, dept 테이블 조인) -->
 	<resultMap type="DeptVO" id="DeptVO">
@@ -125,7 +125,7 @@
 		<collection property="deptVO" resultMap="DeptVO"/>
 	</resultMap>
 	<select id="selectAllEmpInfo" parameterType="EmpVO" resultMap="EmpVO">
-		select 
+		SELECT 
 			e.empno,
 			e.ename,
 			e.job,
@@ -138,10 +138,10 @@
 			d.dname,
 			d.loc
 			<!-- *로 표시해도 됨 -->
-		from emp e
-		inner join dept d
-		on e.deptno = d.deptno
-		where e.empno = #{empno}
+		FROM emp e
+		INNER JOIN dept d
+		ON e.deptno = d.deptno
+		WHERE e.empno = #{empno}
 	</select>
 	
 	
@@ -155,7 +155,8 @@
 	<update id="updateEmp">
 		UPDATE emp
 		SET 
-			sal = #{sal}
+			sal = #{sal},
+			job = #{job}
 		WHERE empno = #{empno}
 		<!-- 여기서 받는 #{}들은 postman에서 json으로 입력한 값들임 -->
 	</update>
@@ -234,31 +235,8 @@
 	</select>
 	<!-- MyBatis에서 if 사용을 최소화 하는게 좋다. 오류 찾기 힘듦 -->
 	
-	<!-- 문제 1. 사원번호가 7902번인 사원 job을 SALESMAN, sal을 3500으로 수정하시오. -->
-	<!-- 방법1 -->
-	<update id="updateEmpJobSal">
-		UPDATE emp
-		SET
-			job = #{job},
-			sal = #{sal}
-		WHERE empno = #{empno}
-	</update>
-	
-	<select id="selectEmpComm" resultType="EmpVO">
-		SELECT
-			comm,
-			sal
-		FROM emp
-		WHERE empno = #{empno}
-		<if test='isComm.equals("true")'>
-			AND comm IS NULL		
-		</if>
-		<if test='isComm.equals("0")'>
-			AND comm IS NULL	
-		</if>
-	</select>
-	
-	<!-- 선생님 풀이 1번 -->
+	<!-- 문제 1. 사원번호가 7902번인 사원 job을 SALESMAN, sal을 3500으로 수정하시오. -->	
+	<!-- 선생님 풀이 -->
 	<update id="updateEmpJobSalTeacher">
 		UPDATE emp
 		SET
@@ -267,6 +245,7 @@
 		WHERE empno = #{empno}
 	</update>
 	<!-- 선생님 풀이 2번 -->
+	<!-- 문제2. 사원번호가 7844번인 사원의 COMM이 0이거나 null이면 기존 급여에서 500을 추가(수정)하시오. -->
 	<select id="selectEmpCommSal" resultType="EmpVO">
 		SELECT
 			empno,
@@ -280,4 +259,22 @@
 		SET sal = #{sal}
 		WHERE empno = #{empno}
 	</update>
+	
+	
+	<!-- 5.12 수업 -->
+	<select id="selectEmpMapList" resultType="map">
+		SELECT
+			empno as a,
+			<!-- as로 컬럼의 이름을 바꾸면 포스트맨의 결과에도 반영된다 -->
+			ename,
+			job,
+			sal,
+			<!-- list로 쓸 경우 아래 3개는 vo에 변수를 추가했어야 함 -->
+			e.deptno,
+			d.dname,
+			d.loc
+		FROM emp AS e
+		INNER JOIN dept AS d
+		ON e.deptno = d.deptno
+	</select>
 </mapper>

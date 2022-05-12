@@ -1,6 +1,7 @@
 package com.example.first_spring.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -149,7 +150,7 @@ public class EmpController {
 	
 	
 	// 5.11 수업
-//	문제 0. 사수가 있는 사원과 없는 사원 조회
+//	[문제 0. 사수가 있는 사원과 없는 사원 조회]
 	@GetMapping("/emp/mgr/{isMgr}")
 	public List<EmpVO> callEmpMgrList(@PathVariable("isMgr") String isMgr){
 		return empService.getEmpIsMgrList(isMgr);
@@ -161,22 +162,12 @@ public class EmpController {
 //	위처럼 풀면 주소가 너무 길어짐. 저렇게 풀면 안 됨.
 	@PatchMapping("/emp/no")
 	public int callEmpJobSalUpdate(@RequestBody EmpVO vo) {
-		return empService.getEmpJobSalUpdateCount(vo);
+//		return empService.getEmpJobSalUpdateCount(vo);
+		return 0;
 	}
-//	위 방법은 empno와 job과 json 모두 json으로 담아서 수정하는 쿼리이다.
+//	위 방법은 empno, job, sal 모두 json으로 담아서 수정하는 쿼리이다.
 //	위 방법보단 empno를 파라미터로 받고 나머지 job과 sal을 json으로 받아서 수정하는 쿼리를 작성해보자
-	@PatchMapping("/emp/no/{empno}")
-	public int callEmpUpdateTest(@RequestBody EmpVO vo, @PathVariable("empno") int empno) {
-		return empService.getEmpUpdateTest(vo, empno);
-	}
-//	body에 있는 vo를 json으로 받아서 수정하는 방법!!! 모르겠음..
-	
-//	문제2. 사원번호가 7844번인 사원의 COMM이 0이거나 null이면 기존 급여에서 500을 추가(수정)하시오.
-	@GetMapping("/emp/no/{empno}/comm/{isComm}/updatedSal")
-	public List<EmpVO> callEmpCommList(@PathVariable("empno") int empno, @PathVariable("isComm") String isComm){
-		return empService.getEmpIsCommList(empno, isComm);
-	}
-//	1. 선생님 풀이
+//	선생님 풀이
 //	@PatchMapping("/emp/empno")
 //	public int callEmpSalJobUpdate(@RequestBody EmpVO vo) {
 //		return
@@ -186,10 +177,18 @@ public class EmpController {
 		return empService.updateEmpJobSal(vo, empno);
 	}
 //	=> 이렇게 풀면 empno를 파라미터로 받고 body에 json 입력해서 send하면 됨
-//	2. 선생님 풀이
-	@PatchMapping("/emp/empno/{empno}")
+
+//	[문제2. 사원번호가 7844번인 사원의 COMM이 0이거나 null이면 기존 급여에서 500을 추가(수정)하시오.]
+//	선생님 풀이
 //	@PatchMapping("/emp/empno/{empno}/{sal}")
+	@PatchMapping("/emp/empno/{empno}")
 	public int callEmpSalUpdate(@PathVariable("empno") int empno) {
 		return empService.getEmpCommSal(empno);
+	}
+	
+//	5.12
+	@GetMapping("/emp/map/list")
+	public List<Map<String, Object>> callEmpMapList(){
+		return empService.getEmpMapList();
 	}
 }

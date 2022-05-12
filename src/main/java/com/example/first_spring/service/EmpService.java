@@ -2,6 +2,7 @@ package com.example.first_spring.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.first_spring.mapper.EmpMapper;
 import com.example.first_spring.vo.EmpVO;
-import com.example.first_spring.vo.UserVO;
 
 @Service
 public class EmpService {
@@ -180,36 +180,20 @@ public class EmpService {
 	}
 	
 //	05.11 수업
+//	0번
+	@Transactional(rollbackFor = {Exception.class})
 	public List<EmpVO> getEmpIsMgrList(String isMgr){
 		return empMapper.selectEmpMgr(isMgr);
 	}
-//	1번 방법1
-	public int getEmpJobSalUpdateCount(EmpVO vo) {
-		return empMapper.updateEmpJobSal(vo);
-	}
-//	1번 방법2
-	public int getEmpUpdateTest(EmpVO vo, int empno) {
-		return empMapper.updateEmpJobSal(vo, empno);
-	}
-	
-	
-	@Transactional(rollbackFor = {Exception.class})
-	public List<EmpVO> getEmpIsCommList(int empno, String isComm){
-		List<EmpVO> list = empMapper.selectEmpComm(empno, isComm);
-		for(EmpVO vo : list) {
-			vo.setSal(vo.getSal()+500);
-		}
-		return empMapper.selectEmpComm(empno, isComm);
-	}
-	
-//	선생님 풀이 1번
+//	1번(선생님 풀이)
 	@Transactional(rollbackFor = {Exception.class})
 	public int updateEmpJobSal(EmpVO vo, int empno) {
 		vo.setEmpno(empno);
 		return empMapper.updateEmpJobSalTeacher(vo);
 //		vo에 empno를 넣어줬기 때문에 vo만 리턴함
 	}
-//	선생님 풀이 2번
+	
+//	2번(선생님 풀이)
 	@Transactional(rollbackFor = {Exception.class})
 	public int getEmpCommSal(int empno) {
 		// COMM이 0이거나 NULL인지 확인
@@ -223,5 +207,10 @@ public class EmpService {
 			return empMapper.updateEmpSal(vo); // 업데이트 로직
 		}
 		return 0;
+	}
+	
+//	5.12
+	public List<Map<String, Object>> getEmpMapList(){
+		return empMapper.selectEmpMapList(); 
 	}
 }

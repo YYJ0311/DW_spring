@@ -1,6 +1,7 @@
 package com.example.first_spring.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -55,14 +56,15 @@ public interface EmpMapper {
 	public List<EmpVO> selectEmpMgr(@Param("isMgr") String isMgr);
 //	파라미터가 1개지만 그냥 Param 붙여줌
 //	MyBatis에 boolean이 없어서 String으로 넣어줌
-	public int updateEmpJobSal(EmpVO vo);
-	public int updateEmpJobSal(EmpVO vo, int empno);
-//	public int updateEmpTest(EmpVO vo, int empno);
-	public List<EmpVO> selectEmpComm(@Param("empno") int empno, @Param("isComm") String isComm);
-	
+//	public int updateEmpTest(EmpVO vo, int empno);	
 //	선생님 풀이 1번
 	public int updateEmpJobSalTeacher(EmpVO vo);
 //	성생님 풀이 2번
 	public EmpVO selectEmpCommSal(@Param("empno") int empno);
 	public int updateEmpSal(EmpVO vo);
+	
+	
+//	5.12
+	public List<Map<String,Object>> selectEmpMapList();
+//	String에 DB의 컬럼이 들어간다.
 }
