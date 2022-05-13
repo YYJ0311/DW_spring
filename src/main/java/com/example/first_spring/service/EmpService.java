@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.example.first_spring.mapper.EmpMapper;
 import com.example.first_spring.vo.EmpVO;
@@ -46,13 +47,14 @@ public class EmpService {
 	public List<EmpVO> getYearEmp(String year){
 		List<EmpVO> list = new ArrayList<EmpVO>();
 		list = empMapper.selectYearEmp(year);
-		int count = 0;
-		for(EmpVO vo : list) {
-			if(vo.getHiredate().split("-")[0].equals(year)) {
-				count++;
-			}
-		}
-		if(count <= 3) {
+//		int count = 0;
+//		for(EmpVO vo : list) {
+//			if(vo.getHiredate().split("-")[0].equals(year)) {
+//				count++;
+//			}
+//		}
+		if(list.size() <= 3) {
+//		if(count <= 3) {
 			return empMapper.selectYearEmp("1981");
 		}
 		return empMapper.selectYearEmp(year);
@@ -166,12 +168,13 @@ public class EmpService {
 		// 1. 급여가 3000 이상인 사원 조회 쿼리 작성
 		// 2. mapper 메소드 작성(리턴타입은 쿼리 결과에 따라)
 		List<EmpVO> list = empMapper.AllEmpList();
-		for(int i=0; i<list.size(); i++) {
-			EmpVO e = list.get(i);
-			if(e.getEmpno() == empno & e.getSal() < 2000) {
-				return 0;
-			}
-		}
+//		사원 삭제를 이용하기 위해서 조건을 주석처리함
+//		for(int i=0; i<list.size(); i++) {
+//			EmpVO e = list.get(i);
+//			if(e.getEmpno() == empno & e.getSal() < 2000) {
+//				return 0;
+//			}
+//		}
 		int rows = empMapper.deleteEmp(empno);
 		return rows;
 	}
@@ -212,5 +215,11 @@ public class EmpService {
 //	5.12
 	public List<Map<String, Object>> getEmpMapList(){
 		return empMapper.selectEmpMapList(); 
+	}
+	
+//	5.13
+	public int getApi(int empno, EmpVO vo) {
+		vo.setEmpno(empno);
+		return empMapper.updateEmpJobSalTeacher(vo);
 	}
 }

@@ -4,9 +4,7 @@
 	<!-- id = mapper 메소드 이름 -->
 	<select id="getEmpList" resultType="EmpVO">
 		SELECT
-			empno,
-			ename,
-			job
+			*
 		FROM emp
 	</select>
 	<select id="getEmp" resultType="EmpVO">

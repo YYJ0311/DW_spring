@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,6 +21,9 @@ import com.example.first_spring.vo.EmpVO;
 public class EmpController {
 	@Autowired
 	private EmpService empService;
+	
+//	모든 사원 조회
+	@CrossOrigin(origins = {"*"})
 	@GetMapping("/emp")
 	public List<EmpVO> callEmpList(){
 		return empService.getAllempList();
@@ -133,11 +137,13 @@ public class EmpController {
 	
 //	아래에 있는 기존 문제에 비즈니스 로직, 퍼시스턴스 쿼리 추가
 //	1. dept와 연결된 emp에서 없는 부서번호를 찾아서 사원이 새로 insert 될 때 그 부서번호로 insert되게 만들기
+	@CrossOrigin(origins = {"*"})
 	@PostMapping("/emp")
 	public int callEmpSet(@RequestBody EmpVO empVO) {
 		return empService.setEmp(empVO);
 	}
 //	2. 급여가 3000 이상인 사원만 삭제(3000이 안 되는 사원은 return 0)
+	@CrossOrigin(origins = {"*"})
 	@DeleteMapping("/emp/empno/{empno}")
 	public int callEmpRemove(@PathVariable("empno") int empno) {
 		return empService.getEmpRemoveCount(empno);
@@ -172,6 +178,7 @@ public class EmpController {
 //	public int callEmpSalJobUpdate(@RequestBody EmpVO vo) {
 //		return
 //	} 로 풀어도 됨
+	@CrossOrigin(origins = {"*"})
 	@PatchMapping("/emp/{empno}")
 	public int callEmpSalJobUpdate(@PathVariable("empno") int empno, @RequestBody EmpVO vo) {
 		return empService.updateEmpJobSal(vo, empno);
@@ -190,5 +197,13 @@ public class EmpController {
 	@GetMapping("/emp/map/list")
 	public List<Map<String, Object>> callEmpMapList(){
 		return empService.getEmpMapList();
+	}
+	
+//	5.13
+//	사원 수정하기
+	@CrossOrigin(origins = {"*"})
+	@PatchMapping("/api/v1/emp/{empno}")
+	public int callApi(@PathVariable("empno") int empno, @RequestBody EmpVO vo) {
+		return empService.getApi(empno, vo);
 	}
 }
